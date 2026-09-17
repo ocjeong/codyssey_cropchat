@@ -33,9 +33,9 @@
 
 | 구분 | URL |
 |------|-----|
-| 프론트엔드 | https://crop-season-ai.vercel.app |
-| 백엔드 API | https://crop-season-ai-backend.onrender.com |
-| API 문서 (Swagger) | https://crop-season-ai-backend.onrender.com/docs |
+| 프론트엔드 | https://codyssey-cropchat-monkie-1eb6aek3g-monkie.vercel.app |
+| 백엔드 API | https://codyssey-cropchat.onrender.com |
+| API 문서 (Swagger) | https://codyssey-cropchat.onrender.com/docs |
 
 > ⚠️ Render 무료 티어는 비활성 상태 시 콜드 스타트로 첫 요청에 30-60초 소요될 수 있습니다.
 

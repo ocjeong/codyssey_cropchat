@@ -1,0 +1,12 @@
+{
+  "name": "crop-season-ai-frontend",
+  "version": "1.0.0",
+  "description": "노지 농작물 작기 데이터 AI 비서 프론트엔드",
+  "scripts": {
+    "build": "bash build.sh",
+    "dev": "python3 -m http.server 3000"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

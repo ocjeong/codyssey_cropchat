@@ -3,10 +3,13 @@
 // ========================================
 
 // 설정
+// window.APP_CONFIG는 config.js에서 주입됩니다 (Vercel 빌드 시 환경 변수로 치환)
 const CONFIG = {
-    API_BASE_URL: import.meta.env?.VITE_API_BASE_URL || 'http://localhost:8000',
-    PAGE_SIZE: 20,
-    TOAST_DURATION: 3000
+    API_BASE_URL: (window.APP_CONFIG?.API_BASE_URL && window.APP_CONFIG.API_BASE_URL !== '%%API_BASE_URL%%')
+        ? window.APP_CONFIG.API_BASE_URL
+        : 'http://localhost:8000',
+    PAGE_SIZE: window.APP_CONFIG?.PAGE_SIZE || 20,
+    TOAST_DURATION: window.APP_CONFIG?.TOAST_DURATION || 3000
 };
 
 // 전역 상태

@@ -1,21 +1,14 @@
 {
   "version": 2,
   "name": "crop-season-ai-frontend",
-  "builds": [
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    }
-  ],
+  "buildCommand": "bash build.sh",
+  "outputDirectory": ".",
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/$1"
     }
   ],
-  "env": {
-    "VITE_API_BASE_URL": "@api_base_url"
-  },
   "github": {
     "enabled": true,
     "autoAlias": true,

@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.config import settings
 from app.api import data_router, conversation_router, chat_router
+from app.api.data_router import router
 from app.firebase import initialize_firebase
 
 
@@ -37,7 +38,7 @@ app.add_middleware(
 )
 
 # 라우터 등록
-app.include_router(data_router)
+app.include_router(router)
 app.include_router(conversation_router)
 app.include_router(chat_router)
 

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>노지 농작물 작기 AI 비서</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">🌱 작기 데이터 AI 비서</h1>
+                <div class="header-actions">
+                    <button id="theme-toggle" class="btn-icon" aria-label="다크 모드 토글">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <!-- 사이드바 내비게이션 -->
+            <nav class="sidebar" id="sidebar">
+                <ul class="nav-tabs">
+                    <li><button class="nav-tab active" data-tab="chat" aria-selected="true">
+                        <span class="tab-icon">💬</span> 채팅
+                    </button></li>
+                    <li><button class="nav-tab" data-tab="data" aria-selected="false">
+                        <span class="tab-icon">📊</span> 데이터 관리
+                    </button></li>
+                    <li><button class="nav-tab" data-tab="history" aria-selected="false">
+                        <span class="tab-icon">📜</span> 대화 기록
+                    </button></li>
+                    <li><button class="nav-tab" data-tab="summary" aria-selected="false">
+                        <span class="tab-icon">📈</span> 데이터 요약
+                    </button></li>
+                </ul>
+            </nav>
+
+            <!-- 탭 컨텐츠 -->
+            <div class="tab-content">
+                <!-- 채팅 탭 -->
+                <section id="tab-chat" class="tab-panel active" role="tabpanel">
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            <h2>AI 비서와 대화하기</h2>
+                            <div class="chat-status" id="chat-status">
+                                <span class="status-indicator online"></span>
+                                <span>연결됨</span>
+                            </div>
+                        </div>
+                        <div class="chat-messages" id="chat-messages" role="log" aria-live="polite">
+                            <div class="message system">
+                                <div class="message-avatar">🤖</div>
+                                <div class="message-content">
+                                    <p>안녕하세요! 노지 농작물 작기 데이터 분석 비서입니다.</p>
+                                    <p>작물 생산량, 추세, 지역별 통계 등에 대해 질문해 보세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-loading" id="chat-loading" style="display: none;" aria-live="assertive">
+                            <div class="loading-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span>AI가 답변을 생성 중입니다...</span>
+                        </div>
+                        <form class="chat-input-form" id="chat-form">
+                            <input type="text" id="chat-input" placeholder="질문을 입력하세요..." autocomplete="off" aria-label="채팅 입력">
+                            <button type="submit" id="chat-submit" aria-label="전송">
+                                <span class="btn-text">전송</span>
+                                <span class="btn-loading" style="display: none;">⏳</span>
+                            </button>
+                        </form>
+                        <div class="chat-hint">
+                            예: "최근 벼 생산량 추세가 어때?", "가장 생산량이 높은 작물은?", "2024년 경기 지역 데이터 알려줘"
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 데이터 관리 탭 -->
+                <section id="tab-data" class="tab-panel" role="tabpanel">
+                    <div class="data-container">
+                        <div class="data-header">
+                            <h2>작물 데이터 관리</h2>
+                            <button class="btn btn-primary" id="btn-add-data">
+                                <span>➕</span> 데이터 추가
+                            </button>
+                        </div>
+                        
+                        <!-- 데이터 추가/수정 모달 -->
+                        <div class="modal" id="data-modal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+                            <div class="modal-overlay"></div>
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 id="modal-title">데이터 추가</h3>
+                                    <button class="modal-close" id="modal-close" aria-label="닫기">×</button>
+                                </div>
+                                <form id="data-form" class="modal-form">
+                                    <input type="hidden" id="data-id">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="data-date">날짜 *</label>
+                                            <input type="date" id="data-date" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="data-crop-type">작물 종류 *</label>
+                                            <select id="data-crop-type" required>
+                                                <option value="">선택하세요</option>
+                                                <option value="rice">벼</option>
+                                                <option value="barley">보리</option>
+                                                <option value="wheat">밀</option>
+                                                <option value="potato">감자</option>
+                                                <option value="sweet_potato">고구마</option>
+                                                <option value="corn">옥수수</option>
+                                                <option value="soybean">콩</option>
+                                                <option value="red_pepper">고추</option>
+                                                <option value="garlic">마늘</option>
+                                                <option value="onion">양파</option>
+                                                <option value="cabbage">배추</option>
+                                                <option value="radish">무</option>
+                                                <option value="other">기타</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="data-region">지역 *</label>
+                                            <select id="data-region" required>
+                                                <option value="">선택하세요</option>
+                                                <option value="전국">전국</option>
+                                                <option value="서울">서울</option>
+                                                <option value="경기">경기</option>
+                                                <option value="강원">강원</option>
+                                                <option value="충북">충북</option>
+                                                <option value="충남">충남</option>
+                                                <option value="전북">전북</option>
+                                                <option value="전남">전남</option>
+                                                <option value="경북">경북</option>
+                                                <option value="경남">경남</option>
+                                                <option value="제주">제주</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="data-area">재배 면적 (ha) *</label>
+                                            <input type="number" id="data-area" step="0.1" min="0" required placeholder="예: 10.5">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="data-yield-amount">생산량 (톤) *</label>
+                                            <input type="number" id="data-yield-amount" step="0.01" min="0" required placeholder="예: 52.3">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="data-yield-per-ha">단위면적당 생산량 (톤/ha) *</label>
+                                            <input type="number" id="data-yield-per-ha" step="0.01" min="0" required placeholder="예: 4.98">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="data-memo">메모</label>
+                                        <textarea id="data-memo" rows="3" placeholder="비고사항"></textarea>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="button" class="btn btn-secondary" id="btn-cancel">취소</button>
+                                        <button type="submit" class="btn btn-primary" id="btn-save-data">저장</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- 데이터 테이블 -->
+                        <div class="table-container" id="data-table-container">
+                            <div class="table-toolbar">
+                                <input type="text" id="data-search" placeholder="검색..." class="search-input">
+                                <div class="table-stats" id="data-stats">총 <span id="total-count">0</span>건</div>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="data-table" id="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>날짜</th>
+                                            <th>작물</th>
+                                            <th>지역</th>
+                                            <th>면적(ha)</th>
+                                            <th>생산량(톤)</th>
+                                            <th>단위당 생산량(톤/ha)</th>
+                                            <th>메모</th>
+                                            <th>작업</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data-tbody">
+                                        <!-- 데이터가 동적으로 추가됨 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="pagination" id="data-pagination">
+                                <button class="btn btn-sm" id="prev-page" disabled>이전</button>
+                                <span class="page-info" id="page-info">1 / 1</span>
+                                <button class="btn btn-sm" id="next-page" disabled>다음</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 대화 기록 탭 -->
+                <section id="tab-history" class="tab-panel" role="tabpanel">
+                    <div class="history-container">
+                        <div class="history-header">
+                            <h2>대화 기록</h2>
+                            <button class="btn btn-secondary" id="btn-refresh-history">새로고침</button>
+                        </div>
+                        <div class="history-layout">
+                            <!-- 대화 목록 -->
+                            <div class="conversation-list" id="conversation-list">
+                                <div class="list-header">대화 목록</div>
+                                <div class="list-content" id="conversation-list-content">
+                                    <div class="empty-state">대화 기록이 없습니다.</div>
+                                </div>
+                            </div>
+                            <!-- 대화 상세 -->
+                            <div class="conversation-detail" id="conversation-detail">
+                                <div class="detail-header">
+                                    <h3 id="detail-title">대화를 선택하세요</h3>
+                                    <button class="btn btn-danger btn-sm" id="btn-delete-conversation" style="display: none;">삭제</button>
+                                </div>
+                                <div class="detail-messages" id="detail-messages">
+                                    <div class="empty-state">좌측에서 대화를 선택하면 메시지가 표시됩니다.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 데이터 요약 탭 -->
+                <section id="tab-summary" class="tab-panel" role="tabpanel">
+                    <div class="summary-container">
+                        <div class="summary-header">
+                            <h2>데이터 요약 통계</h2>
+                            <button class="btn btn-secondary" id="btn-refresh-summary">새로고침</button>
+                        </div>
+                        <div class="summary-grid" id="summary-grid">
+                            <!-- 요약 카드들이 동적으로 생성됨 -->
+                        </div>
+                        <div class="summary-chart" id="summary-chart">
+                            <h3>작물별 레코드 분포</h3>
+                            <div class="chart-container" id="chart-container">
+                                <canvas id="crop-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="summary-chart" id="summary-trend-chart">
+                            <h3>연도별 평균 단위면적당 생산량 추세</h3>
+                            <div class="chart-container" id="trend-chart-container">
+                                <canvas id="trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- 푸터 -->
+        <footer class="footer">
+            <p>노지 농작물 작기 데이터 AI 비서 &copy; 2024</p>
+        </footer>
+    </div>
+
+    <!-- 토스트 알림 -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

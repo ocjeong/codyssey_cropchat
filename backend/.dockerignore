@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.env
+venv/
+*.log
+.DS_Store
+firebase-service-account.json
+.git/
+README.md
+Dockerfile
+.dockerignore
+run_dev.sh
